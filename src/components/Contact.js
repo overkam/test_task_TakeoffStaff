@@ -1,13 +1,18 @@
+import "./Contact.css";
 import { useState } from "react";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import Button from '@material-ui/core/Button';
 
 const Contact = (props) => {
   const [edit, setEdit] = useState(null);
   const [inputNameValue, setInputNameValue] = useState("");
   const [inputPhoneValue, setInputPhoneValue] = useState("");
 
-  const onDeleteContact = (e) => {
-    e.preventDefault();
-    props.deleteContact(+e.target.parentElement.id, props.loggedPerson);
+  const onDeleteContact = (id) => {
+    props.deleteContact(id, props.loggedPerson);
   };
 
   const onEditContact = (e) => {
@@ -29,38 +34,49 @@ const Contact = (props) => {
     <div>
       {props.id === "searchingContact" ? (
         <div>
-          <h4>{props.name}</h4>
+          <p className="searching-contact-name">{props.name}</p>
           <p>Phone number: {props.phone}</p>
         </div>
       ) : (
-        <form onSubmit={onEditContact} id={props.id}>
-          <div>
-            <h4>{props.name}</h4>
-            {edit !== null ? (
-              <input
-                palceholder="name"
-                value={inputNameValue}
-                onChange={(e) => setInputNameValue(e.target.value)}
-              ></input>
+        <form onSubmit={onEditContact}>
+          <div className='contact-name-wrapper' >
+            <p className="contact-name">{props.name}</p>
+            {edit !== null ? (            
+              <div>
+              <InputLabel htmlFor="component-simple">Name</InputLabel>
+                <Input
+                  id="component-simple"
+                  value={inputNameValue}
+                  onChange={(e) => setInputNameValue(e.target.value)}
+                  label="Name"
+                />
+              </div>
             ) : null}
           </div>
-          <div>
-            <p>Phone number: {props.phone}</p>
+          <div className='contact-phone-wrapper' >
+            <p className='contact-phone' >Phone number: {props.phone}</p>
             {edit !== null ? (
-              <input
-                palceholder="phone"
+              <div>
+              <InputLabel htmlFor="component-simple">Phone</InputLabel>
+                <Input
+                  id="component-simple"
                 value={inputPhoneValue}
                 onChange={(e) => setInputPhoneValue(e.target.value)}
-              ></input>
+                  label="Phone"
+                />
+              </div>
             ) : null}
           </div>
-          <button onClick={onDeleteContact}>delete</button>
+          <IconButton
+            aria-label="delete"
+            onClick={() => onDeleteContact(props.id)}
+          >
+            <DeleteIcon />
+          </IconButton>
           {edit === null ? (
-            <button onClick={(e) => setEdit(+e.target.parentElement.id)}>
-              edit
-            </button>
+            <Button onClick={() => setEdit(props.id)}> edit </Button>
           ) : (
-            <button type="submit">set contact</button>
+            <Button type="submit">set contact</Button>
           )}
         </form>
       )}

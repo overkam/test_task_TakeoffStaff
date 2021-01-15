@@ -1,0 +1,10 @@
+.login-wrapper {
+  margin: 50px auto;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-wrapper h1 {
+  text-align: center;
+}

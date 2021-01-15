@@ -1,0 +1,23 @@
+.contacts-header {
+  display: flex;
+  justify-content: space-between;
+}
+.search-add-wrapper {
+  margin-top:20px;
+  display: flex;
+  justify-content: space-between;
+}
+.add-inputs-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 150px;
+  width: 250px;
+}
+.search-contact-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 150px;
+  width: 250px;
+}

@@ -4,7 +4,7 @@ import ContactsContainer from './components/ContactsContainer';
 
 const App = (props) => {
   return (
-    <div>
+    <div className='app-wrapper'>
     {props.loggedPerson === null ? <LoginContainer /> : <ContactsContainer />}
     </div>
   );
