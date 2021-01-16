@@ -78,7 +78,7 @@ const Contacts = (props) => {
   };
 
   return (
-    <div className="contacts-wrapper">
+    <div>
       <div className="contacts-header">
         <h2>YOUR CONTACTS:</h2>
         <Button
@@ -154,7 +154,7 @@ const Contacts = (props) => {
           </div>
         </form>
       </div>
-      <div> {contactsElements} </div>
+      <div className="contact-elements-wrapper"> {contactsElements} </div>
     </div>
   );
 };
