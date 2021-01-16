@@ -10,7 +10,8 @@ You have to run it if you do not have json-server yet
 
 In the project directory you can run:
 
-```npm install
+```
+npm install
 npm start
 ```
 
