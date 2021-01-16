@@ -92,22 +92,6 @@ const Login = (props) => {
       >
         Log in
       </Button>
-
-      {/* <form onSubmit={submitHandler}>
-        <input
-          type="username"
-          placeholder="username"
-          value={inputUserValue}
-          onChange={(e) => setInputUserValue(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="password"
-          value={inputPasswordValue}
-          onChange={(e) => setInputPasswordValue(e.target.value)}
-        />
-        <button type='submit'>Log in</button>
-      </form> */}
     </div>
   );
 };

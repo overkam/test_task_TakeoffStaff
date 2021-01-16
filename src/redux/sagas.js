@@ -6,12 +6,33 @@ import {
   ADD_CONTACT,
   DELETE_CONTACT,
   EDIT_CONTACT,
+  CHECK_USER,
+  LOG_OUT
 } from "./login-reducer";
+
+function fetchUserCheck() {
+  return fetch('http://localhost:3004/loggedUser')
+  .then(res => res.json())
+  .catch(err => console.error(err))
+}
 
 function fetchGetData(username) {
   return fetch(`http://localhost:3004/users?username=${username}`).then((res) =>
     res.json()
-  );
+  )
+  .catch((err) => console.error(err));
+}
+
+function fetchUserSet(user) {
+  return fetch('http://localhost:3004/loggedUser', {
+    method: "PUT",
+    body: JSON.stringify(user),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .catch((err) => console.error(err));
 }
 
 function fetchPutData(user) {
@@ -26,6 +47,13 @@ function fetchPutData(user) {
     .catch((err) => console.error(err));
 }
 
+function* workerUserCheck() {
+  const data = yield fetchUserCheck()
+  if (data.hasOwnProperty('id')) {
+    yield put(setUser(data))
+  }
+}
+
 function* workerLoginCheck(action) {
   const data = yield call(fetchGetData.bind(null, action.username));
 
@@ -35,7 +63,7 @@ function* workerLoginCheck(action) {
       data[0].username === action.username &&
       data[0].password === action.password
     ) {
-      result = data;
+      result = yield fetchUserSet(data[0]);
     }
   } else {
     result = null;
@@ -50,13 +78,15 @@ function* workerAddContact(action) {
     name: action.name,
     phone: action.phone,
   };
-  const result1 = yield call(fetchGetData.bind(null, action.username));
+  const user = yield call(fetchGetData.bind(null, action.username));
 
-  result1[0].contacts.push(body);
+  user[0].contacts.push(body);
 
-  const result2 = yield call(fetchPutData.bind(null, result1[0]));
+  const updatedUser = yield call(fetchPutData.bind(null, user[0]));
 
-  yield put(setUser(result2));
+  const result = yield fetchUserSet(updatedUser);
+
+  yield put(setUser(result));
 }
 
 function* workerDeleteContact(action) {
@@ -67,7 +97,9 @@ function* workerDeleteContact(action) {
     contacts: action.user.contacts.filter((c) => c.id !== action.id),
   };
 
-  yield fetchPutData(body);
+  const result = yield fetchUserSet(body);
+
+  yield fetchPutData(result);
 }
 
 function* workerEditContact(action) {
@@ -85,11 +117,21 @@ function* workerEditContact(action) {
     })
   }
   const data = yield fetchPutData(body)
+  
+  const result = yield fetchUserSet(data)
+
+  yield put(setUser(result))
+}
+
+function* workerLogout() {
+  const data = yield fetchUserSet({})
 
   yield put(setUser(data))
 }
 
 export function* watchLoadData() {
+  yield takeEvery(CHECK_USER, workerUserCheck)
+
   yield takeEvery(LOGIN_CHECK, workerLoginCheck);
 
   yield takeEvery(ADD_CONTACT, workerAddContact);
@@ -97,4 +139,6 @@ export function* watchLoadData() {
   yield takeEvery(DELETE_CONTACT, workerDeleteContact);
 
   yield takeEvery(EDIT_CONTACT , workerEditContact);
+
+  yield takeEvery(LOG_OUT , workerLogout);
 }

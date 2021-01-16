@@ -1,5 +1,6 @@
 import "./Contact.css";
 import { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Input from "@material-ui/core/Input";
@@ -10,6 +11,14 @@ const Contact = (props) => {
   const [edit, setEdit] = useState(null);
   const [inputNameValue, setInputNameValue] = useState("");
   const [inputPhoneValue, setInputPhoneValue] = useState("");
+
+  const useStyles = makeStyles({
+    setContactButton: {
+      float: 'right'
+    }
+  })
+
+  const classes = useStyles();
 
   const onDeleteContact = (id) => {
     props.deleteContact(id, props.loggedPerson);
@@ -41,7 +50,7 @@ const Contact = (props) => {
         <form onSubmit={onEditContact}>
           <div className='contact-name-wrapper' >
             <p className="contact-name">{props.name}</p>
-            {edit !== null ? (            
+            {edit !== null ? (
               <div>
               <InputLabel htmlFor="component-simple">Name</InputLabel>
                 <Input
@@ -76,7 +85,7 @@ const Contact = (props) => {
           {edit === null ? (
             <Button onClick={() => setEdit(props.id)}> edit </Button>
           ) : (
-            <Button type="submit">set contact</Button>
+            <Button type="submit" className={classes.setContactButton} >set contact</Button>
           )}
         </form>
       )}

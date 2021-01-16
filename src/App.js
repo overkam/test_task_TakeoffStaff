@@ -3,9 +3,11 @@ import LoginContainer from './components/LoginContainer';
 import ContactsContainer from './components/ContactsContainer';
 
 const App = (props) => {
+  props.checkLoggedUser()
+
   return (
     <div className='app-wrapper'>
-    {props.loggedPerson === null ? <LoginContainer /> : <ContactsContainer />}
+    {props.loggedPerson.hasOwnProperty('id') ? <ContactsContainer /> : <LoginContainer /> }
     </div>
   );
 }
