@@ -17,4 +17,4 @@ npm start
 
 Go to `src/js-server/` and run `json-server generate.js --port 3004` in different terminal
 
-Use this * [Users] (http://localhost:3004/users) to pick username and password and log in
+* [Users] (http://localhost:3004/users) Use this to pick username and password and log in
